@@ -1,0 +1,38 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+    <xs:element name="customerinfo">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="name" type="xs:string" minOccurs="1"/>
+                <xs:element name="addr" minOccurs="1" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="street" type="xs:string" minOccurs="1"/>
+                            <xs:element name="city" type="xs:string" minOccurs="1"/>
+                            <xs:element name="prov-state" type="xs:string" minOccurs="1"/>
+                            <xs:element name="pcode-zip" type="xs:string" minOccurs="1"/>
+                        </xs:sequence>
+                        <xs:attribute name="country" type="xs:string" use="required"/>
+                        <xs:attribute name="type" type="address_type" use="required"/>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="phone" nillable="true" minOccurs="1" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:simpleContent>
+                            <xs:extension base="xs:string">
+                                <xs:attribute name="type" form="unqualified" type="xs:string"/>
+                            </xs:extension>
+                        </xs:simpleContent>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+            <xs:attribute name="Cid" type="xs:integer"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:simpleType name="address_type">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="billing"/>
+            <xs:enumeration value="shipping"/>
+            <xs:enumeration value="physical"/>
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>
