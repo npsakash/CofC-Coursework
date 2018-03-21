@@ -1,0 +1,7 @@
+DONE buy apples 
+ToDo buy milk 
+DONE buy bread 
+ToDo buy bottled water 
+ToDo buy coffee 
+DONE buy tea 
+ToDo Fix the sink
