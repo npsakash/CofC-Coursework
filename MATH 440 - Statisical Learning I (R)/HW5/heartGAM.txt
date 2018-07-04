@@ -1,0 +1,39 @@
+# Spline model for SA Heart Data.
+
+heart<-read.table("/Users/jonesm/Desktop/StatLearning/HeartData.txt",header=T,sep=",")
+head(heart)
+heart<-heart[,-1]
+head(heart)
+heart.log1<-glm(chd~.,data=heart,family=binomial)
+summary(heart.log1) 
+hla<-glm(chd~age,data=heart,family=binomial)
+summary(hla)
+curve(exp(hla$coef[1]+hla$coef[2]*x)/(1+exp(hla$coef[1]+hla$coef[2]*x)),lwd=3,col=10,xlim=range(heart$age),ylab="Prob of CHD")
+
+library(splines)
+library(gam)
+o<-order(heart$age)
+heart<-heart[o,]
+hnsa.2<-gam(chd~s(age,df=2),family=binomial,data=heart)
+summary(hnsa.2)
+points(heart$age,predict(hnsa.2,type="response"),type="l",col=12,lwd=3)
+hnsa.10<-gam(chd~s(age,df=10),family=binomial,data=heart)
+summary(hnsa.10)
+points(heart$age,predict(hnsa.10,type="response"),type="l",col=11,lwd=3)
+hnsa.4<-gam(chd~s(age,df=4),family=binomial,data=heart)
+summary(hnsa.4)
+points(heart$age,predict(hnsa.4,type="response"),type="l",col=13,lwd=3)
+plot(hnsa.4,se=T,col=12,lwd=3)
+anova(hnsa.2,hnsa.4,hnsa.10)
+
+# Hastie Model
+heart.full.ns<-gam(chd~ns(sbp,df=4)+ns(tobacco,df=4)+ns(ldl,df=4)+ns(obesity,df=4)+ns(age,df=4),data=heart,family=binomial)
+summary(heart.full.ns)
+par(mfrow=c(3,2))
+plot(heart.full.ns,se=T,lwd=3,col="green")
+
+# Using Step GAM
+heart.step<-step.gam(heart.full.ns,scope=list("sbp"=~1+sbp+ns(sbp,2)+ns(sbp,4),"tobacco"=~1+tobacco+ns(tobacco,2)+ns(tobacco,4),"obesity"=~1+obesity+ns(obesity,2)+ns(obesity,4),"ldl"=~1+ldl+ns(ldl,2)+ns(ldl,4),"age"=~1+age+ns(age,2)+ns(age,4)))
+summary(heart.step)
+par(mfrow=c(2,2))
+plot(heart.step,se=T,lwd=3,col="green")

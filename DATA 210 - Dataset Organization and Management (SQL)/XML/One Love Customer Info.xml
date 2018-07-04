@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<customerinfo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="file:///C:/Documents%20and%20Settings/Neal/My%20Documents/CofC/Spring%202015/Data%20210/customerInfo.xsd">
+	<name>Chatham County Animal Control</name>
+	<addr country="us" type="physical">
+		<street>7211 Sallie Mood Drive</street>
+		<city>Savannah</city>
+		<prov-state>GA</prov-state>
+		<pcode-zip>31406</pcode-zip>
+	</addr>
+	<addr country="us" type="billing">
+		<street>295 Police Memorial Drive</street>
+		<city>Savannah</city>
+		<prov-state>GA</prov-state>
+		<pcode-zip>31405</pcode-zip>
+	</addr>
+	<phone>-912-351-6750</phone>
+</customerinfo>

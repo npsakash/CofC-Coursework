@@ -1,7 +1,0 @@
-Student Grades and Weights
-Format: firstName, lastName, w1, g1, w2, g2 ... wn gn
-
-Billy Bother 20 89 30 94 50 82
-Hermione Heffalump 40 93 60 97
-Kurt Kidd 20 88 30 82 40 76 10 99
-Neal Sakash 27 85 27 93 26 72 20 94
