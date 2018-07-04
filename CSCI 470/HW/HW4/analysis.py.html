@@ -1,0 +1,96 @@
+<html>
+<head>
+<title>analysis.py</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.ln { color: #606366; font-weight: normal; font-style: normal; }
+.s0 { color: rgb(128,128,128); }
+.s1 { color: rgb(169,183,198); }
+.s2 { color: rgb(204,120,50); }
+.s3 { color: rgb(104,151,187); }
+.s4 { color: rgb(165,194,97); }
+</style>
+</head>
+<BODY BGCOLOR="#2b2b2b">
+<TABLE CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<TR><TD><CENTER>
+<FONT FACE="Arial, Helvetica" COLOR="#000000">
+analysis.py</FONT>
+</center></TD></TR></TABLE>
+<pre>
+<span class="s0"># analysis.py</span><span class="s1"> 
+</span><span class="s0"># -----------</span><span class="s1"> 
+</span><span class="s0"># Licensing Information:  You are free to use or extend these projects for</span><span class="s1"> 
+</span><span class="s0"># educational purposes provided that (1) you do not distribute or publish</span><span class="s1"> 
+</span><span class="s0"># solutions, (2) you retain this notice, and (3) you provide clear</span><span class="s1"> 
+</span><span class="s0"># attribution to UC Berkeley, including a link to http://ai.berkeley.edu.</span><span class="s1"> 
+</span><span class="s0"># </span><span class="s1"> 
+</span><span class="s0"># Attribution Information: The Pacman AI projects were developed at UC Berkeley.</span><span class="s1"> 
+</span><span class="s0"># The core projects and autograders were primarily created by John DeNero</span><span class="s1"> 
+</span><span class="s0"># (denero@cs.berkeley.edu) and Dan Klein (klein@cs.berkeley.edu).</span><span class="s1"> 
+</span><span class="s0"># Student side autograding was added by Brad Miller, Nick Hay, and</span><span class="s1"> 
+</span><span class="s0"># Pieter Abbeel (pabbeel@cs.berkeley.edu).</span><span class="s1"> 
+ 
+ 
+</span><span class="s0">######################</span><span class="s1"> 
+</span><span class="s0"># ANALYSIS QUESTIONS #</span><span class="s1"> 
+</span><span class="s0">######################</span><span class="s1"> 
+ 
+</span><span class="s0"># Set the given parameters to obtain the specified policies through</span><span class="s1"> 
+</span><span class="s0"># value iteration.</span><span class="s1"> 
+ 
+</span><span class="s2">def </span><span class="s1">question2(): 
+    answerDiscount = </span><span class="s3">0.9</span><span class="s1"> 
+    answerNoise = </span><span class="s3">0</span><span class="s1"> 
+    </span><span class="s2">return </span><span class="s1">answerDiscount</span><span class="s2">, </span><span class="s1">answerNoise 
+ 
+</span><span class="s2">def </span><span class="s1">question3a(): 
+    answerDiscount = </span><span class="s3">0.5</span><span class="s1"> 
+    answerNoise = </span><span class="s3">0</span><span class="s1"> 
+    answerLivingReward = -</span><span class="s3">1</span><span class="s1"> 
+    </span><span class="s2">return </span><span class="s1">answerDiscount</span><span class="s2">, </span><span class="s1">answerNoise</span><span class="s2">, </span><span class="s1">answerLivingReward 
+    </span><span class="s0"># If not possible, return 'NOT POSSIBLE'</span><span class="s1"> 
+ 
+</span><span class="s2">def </span><span class="s1">question3b(): 
+    answerDiscount = </span><span class="s3">0.5</span><span class="s1"> 
+    answerNoise = </span><span class="s3">0.1</span><span class="s1"> 
+    answerLivingReward = -</span><span class="s3">1</span><span class="s1"> 
+    </span><span class="s2">return </span><span class="s1">answerDiscount</span><span class="s2">, </span><span class="s1">answerNoise</span><span class="s2">, </span><span class="s1">answerLivingReward 
+    </span><span class="s0"># If not possible, return 'NOT POSSIBLE'</span><span class="s1"> 
+ 
+</span><span class="s2">def </span><span class="s1">question3c(): 
+    answerDiscount = </span><span class="s3">0.9</span><span class="s1"> 
+    answerNoise = </span><span class="s3">0</span><span class="s1"> 
+    answerLivingReward = </span><span class="s3">0</span><span class="s1"> 
+    </span><span class="s2">return </span><span class="s1">answerDiscount</span><span class="s2">, </span><span class="s1">answerNoise</span><span class="s2">, </span><span class="s1">answerLivingReward 
+    </span><span class="s0"># If not possible, return 'NOT POSSIBLE'</span><span class="s1"> 
+ 
+</span><span class="s2">def </span><span class="s1">question3d(): 
+    answerDiscount = </span><span class="s3">0.9</span><span class="s1"> 
+    answerNoise = </span><span class="s3">0.1</span><span class="s1"> 
+    answerLivingReward = </span><span class="s3">0</span><span class="s1"> 
+    </span><span class="s2">return </span><span class="s1">answerDiscount</span><span class="s2">, </span><span class="s1">answerNoise</span><span class="s2">, </span><span class="s1">answerLivingReward 
+    </span><span class="s0"># If not possible, return 'NOT POSSIBLE'</span><span class="s1"> 
+ 
+</span><span class="s2">def </span><span class="s1">question3e(): 
+    answerDiscount = </span><span class="s3">0</span><span class="s1"> 
+    answerNoise = </span><span class="s3">1</span><span class="s1"> 
+    answerLivingReward = </span><span class="s3">0</span><span class="s1"> 
+    </span><span class="s2">return </span><span class="s1">answerDiscount</span><span class="s2">, </span><span class="s1">answerNoise</span><span class="s2">, </span><span class="s1">answerLivingReward 
+    </span><span class="s0"># If not possible, return 'NOT POSSIBLE'</span><span class="s1"> 
+ 
+</span><span class="s2">def </span><span class="s1">question6(): 
+    answerEpsilon = None 
+    answerLearningRate = None 
+    </span><span class="s2">return </span><span class="s1">answerEpsilon</span><span class="s2">, </span><span class="s1">answerLearningRate 
+    </span><span class="s0"># If not possible, return 'NOT POSSIBLE'</span><span class="s1"> 
+ 
+</span><span class="s2">if </span><span class="s1">__name__ == </span><span class="s4">'__main__'</span><span class="s1">: 
+    </span><span class="s2">print </span><span class="s4">'Answers to analysis questions:'</span><span class="s1"> 
+    </span><span class="s2">import </span><span class="s1">analysis 
+    </span><span class="s2">for </span><span class="s1">q </span><span class="s2">in </span><span class="s1">[q </span><span class="s2">for </span><span class="s1">q </span><span class="s2">in </span><span class="s1">dir(analysis) </span><span class="s2">if </span><span class="s1">q.startswith(</span><span class="s4">'question'</span><span class="s1">)]: 
+        response = getattr(analysis</span><span class="s2">, </span><span class="s1">q)() 
+        </span><span class="s2">print </span><span class="s4">'  Question %s:</span><span class="s2">\t</span><span class="s4">%s' </span><span class="s1">% (q</span><span class="s2">, </span><span class="s1">str(response)) 
+</span></pre>
+</body>
+</html>

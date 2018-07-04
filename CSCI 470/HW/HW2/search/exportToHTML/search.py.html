@@ -1,0 +1,228 @@
+<html>
+<head>
+<title>search.py</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.ln { color: #606366; font-weight: normal; font-style: normal; }
+.s0 { color: rgb(128,128,128); }
+.s1 { color: rgb(169,183,198); }
+.s2 { color: rgb(98,151,85); font-style: italic; }
+.s3 { color: rgb(204,120,50); }
+.s4 { color: rgb(104,151,187); }
+</style>
+</head>
+<BODY BGCOLOR="#2b2b2b">
+<TABLE CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<TR><TD><CENTER>
+<FONT FACE="Arial, Helvetica" COLOR="#000000">
+search.py</FONT>
+</center></TD></TR></TABLE>
+<pre>
+<span class="s0"># search.py</span><span class="s1"> 
+</span><span class="s0"># ---------</span><span class="s1"> 
+</span><span class="s0"># Licensing Information:  You are free to use or extend these projects for</span><span class="s1"> 
+</span><span class="s0"># educational purposes provided that (1) you do not distribute or publish</span><span class="s1"> 
+</span><span class="s0"># solutions, (2) you retain this notice, and (3) you provide clear</span><span class="s1"> 
+</span><span class="s0"># attribution to UC Berkeley, including a link to http://ai.berkeley.edu.</span><span class="s1"> 
+</span><span class="s0"># </span><span class="s1"> 
+</span><span class="s0"># Attribution Information: The Pacman AI projects were developed at UC Berkeley.</span><span class="s1"> 
+</span><span class="s0"># The core projects and autograders were primarily created by John DeNero</span><span class="s1"> 
+</span><span class="s0"># (denero@cs.berkeley.edu) and Dan Klein (klein@cs.berkeley.edu).</span><span class="s1"> 
+</span><span class="s0"># Student side autograding was added by Brad Miller, Nick Hay, and</span><span class="s1"> 
+</span><span class="s0"># Pieter Abbeel (pabbeel@cs.berkeley.edu).</span><span class="s1"> 
+ 
+ 
+</span><span class="s2">&quot;&quot;&quot; 
+In search.py, you will implement generic search algorithms which are called by 
+Pacman agents (in searchAgents.py). 
+&quot;&quot;&quot;</span><span class="s1"> 
+ 
+</span><span class="s3">import </span><span class="s1">util 
+ 
+</span><span class="s3">class </span><span class="s1">SearchProblem: 
+    </span><span class="s2">&quot;&quot;&quot; 
+    This class outlines the structure of a search problem, but doesn't implement 
+    any of the methods (in object-oriented terminology: an abstract class). 
+ 
+    You do not need to change anything in this class, ever. 
+    &quot;&quot;&quot;</span><span class="s1"> 
+ 
+    </span><span class="s3">def </span><span class="s1">getStartState(self): 
+        </span><span class="s2">&quot;&quot;&quot; 
+        Returns the start state for the search problem. 
+        &quot;&quot;&quot;</span><span class="s1"> 
+        util.raiseNotDefined() 
+ 
+    </span><span class="s3">def </span><span class="s1">isGoalState(self</span><span class="s3">, </span><span class="s1">state): 
+        </span><span class="s2">&quot;&quot;&quot; 
+          state: Search state 
+ 
+        Returns True if and only if the state is a valid goal state. 
+        &quot;&quot;&quot;</span><span class="s1"> 
+        util.raiseNotDefined() 
+ 
+    </span><span class="s3">def </span><span class="s1">getSuccessors(self</span><span class="s3">, </span><span class="s1">state): 
+        </span><span class="s2">&quot;&quot;&quot; 
+          state: Search state 
+ 
+        For a given state, this should return a list of triples, (successor, 
+        action, stepCost), where 'successor' is a successor to the current 
+        state, 'action' is the action required to get there, and 'stepCost' is 
+        the incremental cost of expanding to that successor. 
+        &quot;&quot;&quot;</span><span class="s1"> 
+        util.raiseNotDefined() 
+ 
+    </span><span class="s3">def </span><span class="s1">getCostOfActions(self</span><span class="s3">, </span><span class="s1">actions): 
+        </span><span class="s2">&quot;&quot;&quot; 
+         actions: A list of actions to take 
+ 
+        This method returns the total cost of a particular sequence of actions. 
+        The sequence must be composed of legal moves. 
+        &quot;&quot;&quot;</span><span class="s1"> 
+        util.raiseNotDefined() 
+ 
+ 
+</span><span class="s3">def </span><span class="s1">tinyMazeSearch(problem): 
+    </span><span class="s2">&quot;&quot;&quot; 
+    Returns a sequence of moves that solves tinyMaze.  For any other maze, the 
+    sequence of moves will be incorrect, so only use this for tinyMaze. 
+    &quot;&quot;&quot;</span><span class="s1"> 
+    </span><span class="s3">from </span><span class="s1">game </span><span class="s3">import </span><span class="s1">Directions 
+    s = Directions.SOUTH 
+    w = Directions.WEST 
+    </span><span class="s3">return  </span><span class="s1">[s</span><span class="s3">, </span><span class="s1">s</span><span class="s3">, </span><span class="s1">w</span><span class="s3">, </span><span class="s1">s</span><span class="s3">, </span><span class="s1">w</span><span class="s3">, </span><span class="s1">w</span><span class="s3">, </span><span class="s1">s</span><span class="s3">, </span><span class="s1">w] 
+ 
+</span><span class="s3">def </span><span class="s1">depthFirstSearch(problem): 
+    </span><span class="s2">&quot;&quot;&quot; 
+    Search the deepest nodes in the search tree first. 
+ 
+    Your search algorithm needs to return a list of actions that reaches the 
+    goal. Make sure to implement a graph search algorithm. 
+ 
+    To get started, you might want to try some of these simple commands to 
+    understand the search problem that is being passed in: 
+ 
+    print &quot;Start:&quot;, problem.getStartState() 
+    print &quot;Is the start a goal?&quot;, problem.isGoalState(problem.getStartState()) 
+    print &quot;Start's successors:&quot;, problem.getSuccessors(problem.getStartState()) 
+    &quot;&quot;&quot;</span><span class="s1"> 
+    </span><span class="s0">#&quot;&quot;&quot;&quot;*** YOUR CODE HERE ***&quot;&quot;&quot;</span><span class="s1"> 
+    </span><span class="s0">#print &quot;Start:&quot;, problem.getStartState()</span><span class="s1"> 
+    </span><span class="s0">#print &quot;Is the start a goal?&quot;, problem.isGoalState(problem.getStartState())</span><span class="s1"> 
+    </span><span class="s0">#print &quot;Start's successors:&quot;, problem.getSuccessors(problem.getStartState())</span><span class="s1"> 
+    </span><span class="s0"># util.raiseNotDefined()</span><span class="s1"> 
+ 
+    frontierStack = util.Stack() 
+    startState = problem.getStartState() 
+    visited = [] 
+    actions = [] 
+ 
+    frontierStack.push((startState</span><span class="s3">, </span><span class="s1">actions)) 
+ 
+    </span><span class="s3">while </span><span class="s1">frontierStack: 
+        currentState</span><span class="s3">, </span><span class="s1">path = frontierStack.pop() 
+ 
+        </span><span class="s3">if </span><span class="s1">problem.isGoalState(currentState): 
+            </span><span class="s3">return </span><span class="s1">path 
+ 
+        visited.append(currentState) 
+ 
+        possibleActions = problem.getSuccessors(currentState) 
+        </span><span class="s3">for </span><span class="s1">move</span><span class="s3">, </span><span class="s1">action</span><span class="s3">, </span><span class="s1">cost </span><span class="s3">in </span><span class="s1">possibleActions: 
+            </span><span class="s3">if </span><span class="s1">move </span><span class="s3">not in </span><span class="s1">visited: 
+                frontierStack.push((move</span><span class="s3">, </span><span class="s1">path + [action])) 
+ 
+</span><span class="s3">def </span><span class="s1">breadthFirstSearch(problem): 
+    </span><span class="s2">&quot;&quot;&quot;Search the shallowest nodes in the search tree first.&quot;&quot;&quot;</span><span class="s1"> 
+ 
+    frontierQueue = util.Queue() 
+    startState = problem.getStartState() 
+    visited = [] 
+    actions = [] 
+ 
+    frontierQueue.push((startState</span><span class="s3">, </span><span class="s1">actions)) 
+ 
+    </span><span class="s3">while </span><span class="s1">frontierQueue: 
+        currentState</span><span class="s3">, </span><span class="s1">path = frontierQueue.pop() 
+ 
+        </span><span class="s3">if </span><span class="s1">currentState </span><span class="s3">not in </span><span class="s1">visited: 
+            visited.append(currentState) 
+ 
+            </span><span class="s3">if </span><span class="s1">problem.isGoalState(currentState): 
+                </span><span class="s3">return </span><span class="s1">path 
+ 
+            possibleActions = problem.getSuccessors(currentState) 
+            </span><span class="s3">for </span><span class="s1">move</span><span class="s3">, </span><span class="s1">action</span><span class="s3">, </span><span class="s1">cost </span><span class="s3">in </span><span class="s1">possibleActions: 
+                frontierQueue.push((move</span><span class="s3">, </span><span class="s1">path + [action])) 
+ 
+    </span><span class="s0">#util.raiseNotDefined()</span><span class="s1"> 
+ 
+</span><span class="s3">def </span><span class="s1">uniformCostSearch(problem): 
+    </span><span class="s2">&quot;&quot;&quot;Search the node of least total cost first.&quot;&quot;&quot;</span><span class="s1"> 
+    </span><span class="s0">#&quot;*** YOUR CODE HERE ***&quot;</span><span class="s1"> 
+    frontierPriorityQueue = util.PriorityQueue() 
+    startState = problem.getStartState() 
+    visited = [] 
+    actions = [] 
+    cost = </span><span class="s4">0</span><span class="s1"> 
+ 
+    frontierPriorityQueue.push((startState</span><span class="s3">, </span><span class="s1">actions</span><span class="s3">, </span><span class="s1">cost)</span><span class="s3">, </span><span class="s1">cost) 
+ 
+    </span><span class="s3">while </span><span class="s1">frontierPriorityQueue: 
+        currentState</span><span class="s3">, </span><span class="s1">path</span><span class="s3">, </span><span class="s1">currentCost = frontierPriorityQueue.pop() 
+ 
+        </span><span class="s3">if </span><span class="s1">currentState </span><span class="s3">not in </span><span class="s1">visited: 
+            visited.append(currentState) 
+ 
+            </span><span class="s3">if </span><span class="s1">problem.isGoalState(currentState): 
+                </span><span class="s3">return </span><span class="s1">path 
+ 
+            possibleActions = problem.getSuccessors(currentState) 
+            </span><span class="s3">for </span><span class="s1">move</span><span class="s3">, </span><span class="s1">action</span><span class="s3">, </span><span class="s1">cost </span><span class="s3">in </span><span class="s1">possibleActions: 
+                frontierPriorityQueue.push((move</span><span class="s3">, </span><span class="s1">path + [action]</span><span class="s3">, </span><span class="s1">currentCost + cost)</span><span class="s3">, </span><span class="s1">currentCost + cost) 
+    </span><span class="s0">#util.raiseNotDefined()</span><span class="s1"> 
+ 
+</span><span class="s3">def </span><span class="s1">nullHeuristic(state</span><span class="s3">, </span><span class="s1">problem=None): 
+    </span><span class="s2">&quot;&quot;&quot; 
+    A heuristic function estimates the cost from the current state to the nearest 
+    goal in the provided SearchProblem.  This heuristic is trivial. 
+    &quot;&quot;&quot;</span><span class="s1"> 
+    </span><span class="s3">return </span><span class="s4">0</span><span class="s1"> 
+ 
+</span><span class="s3">def </span><span class="s1">aStarSearch(problem</span><span class="s3">, </span><span class="s1">heuristic=nullHeuristic): 
+    </span><span class="s2">&quot;&quot;&quot;Search the node that has the lowest combined cost and heuristic first.&quot;&quot;&quot;</span><span class="s1"> 
+   </span><span class="s0"># &quot;*** YOUR CODE HERE ***&quot;</span><span class="s1"> 
+    frontierAStar = util.PriorityQueue() 
+    visited = [] 
+    startState = problem.getStartState() 
+    h = heuristic(startState</span><span class="s3">, </span><span class="s1">problem) 
+    cost = </span><span class="s4">0</span><span class="s1"> 
+    actions = [] 
+ 
+    frontierAStar.push((startState</span><span class="s3">, </span><span class="s1">actions</span><span class="s3">, </span><span class="s1">cost)</span><span class="s3">, </span><span class="s1">h) 
+ 
+    </span><span class="s3">while </span><span class="s1">frontierAStar: 
+        currentState</span><span class="s3">, </span><span class="s1">path</span><span class="s3">, </span><span class="s1">currentCost = frontierAStar.pop() 
+ 
+        </span><span class="s3">if </span><span class="s1">currentState </span><span class="s3">not in </span><span class="s1">visited: 
+            visited.append(currentState) 
+ 
+            </span><span class="s3">if </span><span class="s1">problem.isGoalState(currentState): 
+                </span><span class="s3">return </span><span class="s1">path 
+ 
+            possibleActions = problem.getSuccessors(currentState) 
+            </span><span class="s3">for </span><span class="s1">move</span><span class="s3">, </span><span class="s1">action</span><span class="s3">, </span><span class="s1">cost </span><span class="s3">in </span><span class="s1">possibleActions: 
+                </span><span class="s0"># A* f(n) = g(n) + h(n)</span><span class="s1"> 
+                g = currentCost + cost 
+                frontierAStar.push((move</span><span class="s3">, </span><span class="s1">path + [action]</span><span class="s3">, </span><span class="s1">currentCost + cost)</span><span class="s3">, </span><span class="s1">g + heuristic(move</span><span class="s3">, </span><span class="s1">problem)) 
+    </span><span class="s0">#util.raiseNotDefined()</span><span class="s1"> 
+ 
+ 
+</span><span class="s0"># Abbreviations</span><span class="s1"> 
+bfs = breadthFirstSearch 
+dfs = depthFirstSearch 
+astar = aStarSearch 
+ucs = uniformCostSearch 
+</span></pre>
+</body>
+</html>

@@ -1,0 +1,236 @@
+<html>
+<head>
+<title>qlearningAgents.py</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.ln { color: #606366; font-weight: normal; font-style: normal; }
+.s0 { color: rgb(128,128,128); }
+.s1 { color: rgb(169,183,198); }
+.s2 { color: rgb(204,120,50); }
+.s3 { color: rgb(98,151,85); font-style: italic; }
+.s4 { color: rgb(165,194,97); }
+.s5 { color: rgb(104,151,187); }
+</style>
+</head>
+<BODY BGCOLOR="#2b2b2b">
+<TABLE CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<TR><TD><CENTER>
+<FONT FACE="Arial, Helvetica" COLOR="#000000">
+qlearningAgents.py</FONT>
+</center></TD></TR></TABLE>
+<pre>
+<span class="s0"># qlearningAgents.py</span><span class="s1"> 
+</span><span class="s0"># ------------------</span><span class="s1"> 
+</span><span class="s0"># Licensing Information:  You are free to use or extend these projects for</span><span class="s1"> 
+</span><span class="s0"># educational purposes provided that (1) you do not distribute or publish</span><span class="s1"> 
+</span><span class="s0"># solutions, (2) you retain this notice, and (3) you provide clear</span><span class="s1"> 
+</span><span class="s0"># attribution to UC Berkeley, including a link to http://ai.berkeley.edu.</span><span class="s1"> 
+</span><span class="s0"># </span><span class="s1"> 
+</span><span class="s0"># Attribution Information: The Pacman AI projects were developed at UC Berkeley.</span><span class="s1"> 
+</span><span class="s0"># The core projects and autograders were primarily created by John DeNero</span><span class="s1"> 
+</span><span class="s0"># (denero@cs.berkeley.edu) and Dan Klein (klein@cs.berkeley.edu).</span><span class="s1"> 
+</span><span class="s0"># Student side autograding was added by Brad Miller, Nick Hay, and</span><span class="s1"> 
+</span><span class="s0"># Pieter Abbeel (pabbeel@cs.berkeley.edu).</span><span class="s1"> 
+ 
+ 
+</span><span class="s2">from </span><span class="s1">game </span><span class="s2">import </span><span class="s1">* 
+</span><span class="s2">from </span><span class="s1">learningAgents </span><span class="s2">import </span><span class="s1">ReinforcementAgent 
+</span><span class="s2">from </span><span class="s1">featureExtractors </span><span class="s2">import </span><span class="s1">* 
+ 
+</span><span class="s2">import </span><span class="s1">random</span><span class="s2">,</span><span class="s1">util</span><span class="s2">,</span><span class="s1">math 
+ 
+</span><span class="s2">class </span><span class="s1">QLearningAgent(ReinforcementAgent): 
+    </span><span class="s3">&quot;&quot;&quot; 
+      Q-Learning Agent 
+ 
+      Functions you should fill in: 
+        - computeValueFromQValues 
+        - computeActionFromQValues 
+        - getQValue 
+        - getAction 
+        - update 
+ 
+      Instance variables you have access to 
+        - self.epsilon (exploration prob) 
+        - self.alpha (learning rate) 
+        - self.discount (discount rate) 
+ 
+      Functions you should use 
+        - self.getLegalActions(state) 
+          which returns legal actions for a state 
+    &quot;&quot;&quot;</span><span class="s1"> 
+    </span><span class="s2">def </span><span class="s1">__init__(self</span><span class="s2">, </span><span class="s1">**args): 
+        </span><span class="s3">&quot;You can initialize Q-values here...&quot;</span><span class="s1"> 
+        ReinforcementAgent.__init__(self</span><span class="s2">, </span><span class="s1">**args) 
+ 
+        </span><span class="s4">&quot;*** YOUR CODE HERE ***&quot;</span><span class="s1"> 
+        self.qValues = util.Counter() 
+ 
+ 
+ 
+    </span><span class="s2">def </span><span class="s1">getQValue(self</span><span class="s2">, </span><span class="s1">state</span><span class="s2">, </span><span class="s1">action): 
+        </span><span class="s3">&quot;&quot;&quot; 
+          Returns Q(state,action) 
+          Should return 0.0 if we have never seen a state 
+          or the Q node value otherwise 
+        &quot;&quot;&quot;</span><span class="s1"> 
+        </span><span class="s4">&quot;*** YOUR CODE HERE ***&quot;</span><span class="s1"> 
+        </span><span class="s2">return </span><span class="s1">self.qValues[(state</span><span class="s2">, </span><span class="s1">action)] 
+        </span><span class="s0">#util.raiseNotDefined()</span><span class="s1"> 
+ 
+ 
+    </span><span class="s2">def </span><span class="s1">computeValueFromQValues(self</span><span class="s2">, </span><span class="s1">state): 
+        </span><span class="s3">&quot;&quot;&quot; 
+          Returns max_action Q(state,action) 
+          where the max is over legal actions.  Note that if 
+          there are no legal actions, which is the case at the 
+          terminal state, you should return a value of 0.0. 
+        &quot;&quot;&quot;</span><span class="s1"> 
+        </span><span class="s4">&quot;*** YOUR CODE HERE ***&quot;</span><span class="s1"> 
+        qValues = [] 
+        </span><span class="s2">for </span><span class="s1">action </span><span class="s2">in </span><span class="s1">self.getLegalActions(state): 
+            qValues.append(self.getQValue(state</span><span class="s2">, </span><span class="s1">action)) 
+        </span><span class="s2">if </span><span class="s1">len(self.getLegalActions(state)) &gt; </span><span class="s5">0</span><span class="s1">: 
+            </span><span class="s2">return </span><span class="s1">max(qValues) 
+        </span><span class="s2">else</span><span class="s1">: 
+            </span><span class="s2">return </span><span class="s5">0.0</span><span class="s1"> 
+        </span><span class="s0"># util.raiseNotDefined()</span><span class="s1"> 
+ 
+    </span><span class="s2">def </span><span class="s1">computeActionFromQValues(self</span><span class="s2">, </span><span class="s1">state): 
+        </span><span class="s3">&quot;&quot;&quot; 
+          Compute the best action to take in a state.  Note that if there 
+          are no legal actions, which is the case at the terminal state, 
+          you should return None. 
+        &quot;&quot;&quot;</span><span class="s1"> 
+        </span><span class="s4">&quot;*** YOUR CODE HERE ***&quot;</span><span class="s1"> 
+        bestAction = None 
+        maxQvalue = </span><span class="s5">0</span><span class="s1"> 
+        </span><span class="s2">for </span><span class="s1">action </span><span class="s2">in </span><span class="s1">self.getLegalActions(state): 
+            qValue = self.getQValue(state</span><span class="s2">, </span><span class="s1">action) 
+            </span><span class="s2">if </span><span class="s1">qValue &gt; maxQvalue </span><span class="s2">or </span><span class="s1">bestAction </span><span class="s2">is </span><span class="s1">None: 
+                maxQvalue = qValue 
+                bestAction = action 
+        </span><span class="s2">return </span><span class="s1">bestAction 
+        </span><span class="s0">#util.raiseNotDefined()</span><span class="s1"> 
+ 
+    </span><span class="s2">def </span><span class="s1">getAction(self</span><span class="s2">, </span><span class="s1">state): 
+        </span><span class="s3">&quot;&quot;&quot; 
+          Compute the action to take in the current state.  With 
+          probability self.epsilon, we should take a random action and 
+          take the best policy action otherwise.  Note that if there are 
+          no legal actions, which is the case at the terminal state, you 
+          should choose None as the action. 
+ 
+          HINT: You might want to use util.flipCoin(prob) 
+          HINT: To pick randomly from a list, use random.choice(list) 
+        &quot;&quot;&quot;</span><span class="s1"> 
+        </span><span class="s4">&quot;*** YOUR CODE HERE ***&quot;</span><span class="s1"> 
+        actions = self.getLegalActions(state) 
+        </span><span class="s2">if </span><span class="s1">util.flipCoin(self.epsilon): 
+          </span><span class="s2">return </span><span class="s1">random.choice(actions) 
+        </span><span class="s2">else</span><span class="s1">: 
+          </span><span class="s2">return </span><span class="s1">self.computeActionFromQValues(state) 
+ 
+        </span><span class="s0">#util.raiseNotDefined()</span><span class="s1"> 
+ 
+    </span><span class="s2">def </span><span class="s1">update(self</span><span class="s2">, </span><span class="s1">state</span><span class="s2">, </span><span class="s1">action</span><span class="s2">, </span><span class="s1">nextState</span><span class="s2">, </span><span class="s1">reward): 
+        </span><span class="s3">&quot;&quot;&quot; 
+          The parent class calls this to observe a 
+          state = action =&gt; nextState and reward transition. 
+          You should do your Q-Value update here 
+ 
+          NOTE: You should never call this function, 
+          it will be called on your behalf 
+        &quot;&quot;&quot;</span><span class="s1"> 
+        </span><span class="s4">&quot;*** YOUR CODE HERE ***&quot;</span><span class="s1"> 
+        actions = self.getLegalActions(nextState) 
+        maxValue = reward 
+        </span><span class="s2">if </span><span class="s1">len(actions) &gt; </span><span class="s5">0</span><span class="s1">: 
+            maxValue = reward + (self.discount * max([self.getQValue(nextState</span><span class="s2">, </span><span class="s1">ap) </span><span class="s2">for </span><span class="s1">ap </span><span class="s2">in </span><span class="s1">actions])) 
+        self.qValues[(state</span><span class="s2">,</span><span class="s1">action)] = (</span><span class="s5">1 </span><span class="s1">- self.alpha) * self.getQValue(state</span><span class="s2">, </span><span class="s1">action) + self.alpha * maxValue 
+         
+        </span><span class="s0">#util.raiseNotDefined()</span><span class="s1"> 
+ 
+    </span><span class="s2">def </span><span class="s1">getPolicy(self</span><span class="s2">, </span><span class="s1">state): 
+        </span><span class="s2">return </span><span class="s1">self.computeActionFromQValues(state) 
+ 
+    </span><span class="s2">def </span><span class="s1">getValue(self</span><span class="s2">, </span><span class="s1">state): 
+        </span><span class="s2">return </span><span class="s1">self.computeValueFromQValues(state) 
+ 
+ 
+</span><span class="s2">class </span><span class="s1">PacmanQAgent(QLearningAgent): 
+    </span><span class="s3">&quot;Exactly the same as QLearningAgent, but with different default parameters&quot;</span><span class="s1"> 
+ 
+    </span><span class="s2">def </span><span class="s1">__init__(self</span><span class="s2">, </span><span class="s1">epsilon=</span><span class="s5">0.05</span><span class="s2">,</span><span class="s1">gamma=</span><span class="s5">0.8</span><span class="s2">,</span><span class="s1">alpha=</span><span class="s5">0.2</span><span class="s2">, </span><span class="s1">numTraining=</span><span class="s5">0</span><span class="s2">, </span><span class="s1">**args): 
+        </span><span class="s3">&quot;&quot;&quot; 
+        These default parameters can be changed from the pacman.py command line. 
+        For example, to change the exploration rate, try: 
+            python pacman.py -p PacmanQLearningAgent -a epsilon=0.1 
+ 
+        alpha    - learning rate 
+        epsilon  - exploration rate 
+        gamma    - discount factor 
+        numTraining - number of training episodes, i.e. no learning after these many episodes 
+        &quot;&quot;&quot;</span><span class="s1"> 
+        args[</span><span class="s4">'epsilon'</span><span class="s1">] = epsilon 
+        args[</span><span class="s4">'gamma'</span><span class="s1">] = gamma 
+        args[</span><span class="s4">'alpha'</span><span class="s1">] = alpha 
+        args[</span><span class="s4">'numTraining'</span><span class="s1">] = numTraining 
+        self.index = </span><span class="s5">0  </span><span class="s0"># This is always Pacman</span><span class="s1"> 
+        QLearningAgent.__init__(self</span><span class="s2">, </span><span class="s1">**args) 
+ 
+    </span><span class="s2">def </span><span class="s1">getAction(self</span><span class="s2">, </span><span class="s1">state): 
+        </span><span class="s3">&quot;&quot;&quot; 
+        Simply calls the getAction method of QLearningAgent and then 
+        informs parent of action for Pacman.  Do not change or remove this 
+        method. 
+        &quot;&quot;&quot;</span><span class="s1"> 
+        action = QLearningAgent.getAction(self</span><span class="s2">,</span><span class="s1">state) 
+        self.doAction(state</span><span class="s2">,</span><span class="s1">action) 
+        </span><span class="s2">return </span><span class="s1">action 
+ 
+ 
+</span><span class="s2">class </span><span class="s1">ApproximateQAgent(PacmanQAgent): 
+    </span><span class="s3">&quot;&quot;&quot; 
+       ApproximateQLearningAgent 
+ 
+       You should only have to overwrite getQValue 
+       and update.  All other QLearningAgent functions 
+       should work as is. 
+    &quot;&quot;&quot;</span><span class="s1"> 
+    </span><span class="s2">def </span><span class="s1">__init__(self</span><span class="s2">, </span><span class="s1">extractor=</span><span class="s4">'IdentityExtractor'</span><span class="s2">, </span><span class="s1">**args): 
+        self.featExtractor = util.lookup(extractor</span><span class="s2">, </span><span class="s1">globals())() 
+        PacmanQAgent.__init__(self</span><span class="s2">, </span><span class="s1">**args) 
+        self.weights = util.Counter() 
+ 
+    </span><span class="s2">def </span><span class="s1">getWeights(self): 
+        </span><span class="s2">return </span><span class="s1">self.weights 
+ 
+    </span><span class="s2">def </span><span class="s1">getQValue(self</span><span class="s2">, </span><span class="s1">state</span><span class="s2">, </span><span class="s1">action): 
+        </span><span class="s3">&quot;&quot;&quot; 
+          Should return Q(state,action) = w * featureVector 
+          where * is the dotProduct operator 
+        &quot;&quot;&quot;</span><span class="s1"> 
+        </span><span class="s4">&quot;*** YOUR CODE HERE ***&quot;</span><span class="s1"> 
+        util.raiseNotDefined() 
+ 
+    </span><span class="s2">def </span><span class="s1">update(self</span><span class="s2">, </span><span class="s1">state</span><span class="s2">, </span><span class="s1">action</span><span class="s2">, </span><span class="s1">nextState</span><span class="s2">, </span><span class="s1">reward): 
+        </span><span class="s3">&quot;&quot;&quot; 
+           Should update your weights based on transition 
+        &quot;&quot;&quot;</span><span class="s1"> 
+        </span><span class="s4">&quot;*** YOUR CODE HERE ***&quot;</span><span class="s1"> 
+        util.raiseNotDefined() 
+ 
+    </span><span class="s2">def </span><span class="s1">final(self</span><span class="s2">, </span><span class="s1">state): 
+        </span><span class="s3">&quot;Called at the end of each game.&quot;</span><span class="s1"> 
+        </span><span class="s0"># call the super-class final method</span><span class="s1"> 
+        PacmanQAgent.final(self</span><span class="s2">, </span><span class="s1">state) 
+ 
+        </span><span class="s0"># did we finish training?</span><span class="s1"> 
+        </span><span class="s2">if </span><span class="s1">self.episodesSoFar == self.numTraining: 
+            </span><span class="s0"># you might want to print your weights here for debugging</span><span class="s1"> 
+            </span><span class="s4">&quot;*** YOUR CODE HERE ***&quot;</span><span class="s1"> 
+            </span><span class="s2">pass</span><span class="s1"> 
+</span></pre>
+</body>
+</html>

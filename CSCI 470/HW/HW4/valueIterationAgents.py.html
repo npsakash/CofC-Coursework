@@ -1,0 +1,142 @@
+<html>
+<head>
+<title>valueIterationAgents.py</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.ln { color: #606366; font-weight: normal; font-style: normal; }
+.s0 { color: rgb(128,128,128); }
+.s1 { color: rgb(169,183,198); }
+.s2 { color: rgb(204,120,50); }
+.s3 { color: rgb(98,151,85); font-style: italic; }
+.s4 { color: rgb(104,151,187); }
+.s5 { color: rgb(165,194,97); }
+</style>
+</head>
+<BODY BGCOLOR="#2b2b2b">
+<TABLE CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<TR><TD><CENTER>
+<FONT FACE="Arial, Helvetica" COLOR="#000000">
+valueIterationAgents.py</FONT>
+</center></TD></TR></TABLE>
+<pre>
+<span class="s0"># valueIterationAgents.py</span><span class="s1"> 
+</span><span class="s0"># -----------------------</span><span class="s1"> 
+</span><span class="s0"># Licensing Information:  You are free to use or extend these projects for</span><span class="s1"> 
+</span><span class="s0"># educational purposes provided that (1) you do not distribute or publish</span><span class="s1"> 
+</span><span class="s0"># solutions, (2) you retain this notice, and (3) you provide clear</span><span class="s1"> 
+</span><span class="s0"># attribution to UC Berkeley, including a link to http://ai.berkeley.edu.</span><span class="s1"> 
+</span><span class="s0"># </span><span class="s1"> 
+</span><span class="s0"># Attribution Information: The Pacman AI projects were developed at UC Berkeley.</span><span class="s1"> 
+</span><span class="s0"># The core projects and autograders were primarily created by John DeNero</span><span class="s1"> 
+</span><span class="s0"># (denero@cs.berkeley.edu) and Dan Klein (klein@cs.berkeley.edu).</span><span class="s1"> 
+</span><span class="s0"># Student side autograding was added by Brad Miller, Nick Hay, and</span><span class="s1"> 
+</span><span class="s0"># Pieter Abbeel (pabbeel@cs.berkeley.edu).</span><span class="s1"> 
+ 
+ 
+</span><span class="s2">import </span><span class="s1">mdp</span><span class="s2">, </span><span class="s1">util 
+ 
+</span><span class="s2">from </span><span class="s1">learningAgents </span><span class="s2">import </span><span class="s1">ValueEstimationAgent 
+ 
+</span><span class="s2">class </span><span class="s1">ValueIterationAgent(ValueEstimationAgent): 
+    </span><span class="s3">&quot;&quot;&quot; 
+        * Please read learningAgents.py before reading this.* 
+ 
+        A ValueIterationAgent takes a Markov decision process 
+        (see mdp.py) on initialization and runs value iteration 
+        for a given number of iterations using the supplied 
+        discount factor. 
+    &quot;&quot;&quot;</span><span class="s1"> 
+    </span><span class="s2">def </span><span class="s1">__init__(self</span><span class="s2">, </span><span class="s1">mdp</span><span class="s2">, </span><span class="s1">discount = </span><span class="s4">0.9</span><span class="s2">, </span><span class="s1">iterations = </span><span class="s4">100</span><span class="s1">): 
+        </span><span class="s3">&quot;&quot;&quot; 
+          Your value iteration agent should take an mdp on 
+          construction, run the indicated number of iterations 
+          and then act according to the resulting policy. 
+ 
+          Some useful mdp methods you will use: 
+              mdp.getStates() 
+              mdp.getPossibleActions(state) 
+              mdp.getTransitionStatesAndProbs(state, action) 
+              mdp.getReward(state, action, nextState) 
+              mdp.isTerminal(state) 
+        &quot;&quot;&quot;</span><span class="s1"> 
+        self.mdp = mdp 
+        self.discount = discount 
+        self.iterations = iterations 
+        self.values = util.Counter() </span><span class="s0"># A Counter is a dict with default 0</span><span class="s1"> 
+ 
+        </span><span class="s0"># Write value iteration code here</span><span class="s1"> 
+        </span><span class="s5">&quot;*** YOUR CODE HERE ***&quot;</span><span class="s1"> 
+        </span><span class="s2">for </span><span class="s1">i </span><span class="s2">in </span><span class="s1">range(iterations):  
+          currentValue = self.values.copy()  
+           
+          </span><span class="s2">for </span><span class="s1">state </span><span class="s2">in </span><span class="s1">mdp.getStates(): 
+              actions = util.Counter() 
+               
+              </span><span class="s2">if  not </span><span class="s1">mdp.isTerminal(state): 
+                  </span><span class="s2">for </span><span class="s1">legalActions </span><span class="s2">in </span><span class="s1">mdp.getPossibleActions(state): 
+                    </span><span class="s0">#action[legalActions] = getQValue(state, legalActions)</span><span class="s1"> 
+ 
+                    </span><span class="s2">for </span><span class="s1">t</span><span class="s2">, </span><span class="s1">sPrime </span><span class="s2">in </span><span class="s1">mdp.getTransitionStatesAndProbs(state</span><span class="s2">, </span><span class="s1">legalActions): 
+                            valueState = sPrime * (mdp.getReward(state</span><span class="s2">, </span><span class="s1">legalActions</span><span class="s2">, </span><span class="s1">t) + (discount* currentValue[t])) 
+                            actions[legalActions] += valueState 
+                  self.values[state] = actions[actions.argMax()]  
+ 
+    </span><span class="s2">def </span><span class="s1">getValue(self</span><span class="s2">, </span><span class="s1">state): 
+        </span><span class="s3">&quot;&quot;&quot; 
+          Return the value of the state (computed in __init__). 
+        &quot;&quot;&quot;</span><span class="s1"> 
+        </span><span class="s2">return </span><span class="s1">self.values[state] 
+ 
+ 
+    </span><span class="s2">def </span><span class="s1">computeQValueFromValues(self</span><span class="s2">, </span><span class="s1">state</span><span class="s2">, </span><span class="s1">action): 
+        </span><span class="s3">&quot;&quot;&quot; 
+          Compute the Q-value of action in state from the 
+          value function stored in self.values. 
+        &quot;&quot;&quot;</span><span class="s1"> 
+        </span><span class="s5">&quot;*** YOUR CODE HERE ***&quot;</span><span class="s1"> 
+ 
+        valueState = </span><span class="s4">0</span><span class="s1"> 
+        </span><span class="s2">for </span><span class="s1">sPrime</span><span class="s2">, </span><span class="s1">t </span><span class="s2">in </span><span class="s1">self.mdp.getTransitionStatesAndProbs(state</span><span class="s2">,</span><span class="s1">action): 
+          </span><span class="s5">&quot;get sprime&quot;</span><span class="s1"> 
+          valueState += t*(self.mdp.getReward(state</span><span class="s2">,</span><span class="s1">action</span><span class="s2">,</span><span class="s1">sPrime)+(self.discount*self.values[sPrime])) 
+        </span><span class="s2">return </span><span class="s1">valueState 
+         
+</span><span class="s0">#        util.raiseNotDefined()</span><span class="s1"> 
+ 
+    </span><span class="s2">def </span><span class="s1">computeActionFromValues(self</span><span class="s2">, </span><span class="s1">state): 
+        </span><span class="s3">&quot;&quot;&quot; 
+          The policy is the best action in the given state 
+          according to the values currently stored in self.values. 
+ 
+          You may break ties any way you see fit.  Note that if 
+          there are no legal actions, which is the case at the 
+          terminal state, you should return None. 
+        &quot;&quot;&quot;</span><span class="s1"> 
+        </span><span class="s5">&quot;*** YOUR CODE HERE ***&quot;</span><span class="s1"> 
+        
+        </span><span class="s2">if not </span><span class="s1">self.mdp.isTerminal(state): 
+          t = float(</span><span class="s5">&quot;-inf&quot;</span><span class="s1">) 
+          bestAction = None 
+ 
+          </span><span class="s2">for </span><span class="s1">action </span><span class="s2">in </span><span class="s1">self.mdp.getPossibleActions(state): 
+            temp = self.getQValue(state</span><span class="s2">, </span><span class="s1">action) 
+            </span><span class="s2">if </span><span class="s1">temp &gt; t: 
+              bestAction = action 
+              t = temp 
+          </span><span class="s2">return </span><span class="s1">bestAction 
+        </span><span class="s2">else</span><span class="s1">: 
+          </span><span class="s2">return </span><span class="s1">None 
+        </span><span class="s0">#util.raiseNotDefined()</span><span class="s1"> 
+ 
+    </span><span class="s2">def </span><span class="s1">getPolicy(self</span><span class="s2">, </span><span class="s1">state): 
+        </span><span class="s2">return </span><span class="s1">self.computeActionFromValues(state) 
+ 
+    </span><span class="s2">def </span><span class="s1">getAction(self</span><span class="s2">, </span><span class="s1">state): 
+        </span><span class="s3">&quot;Returns the policy at the state (no exploration).&quot;</span><span class="s1"> 
+        </span><span class="s2">return </span><span class="s1">self.computeActionFromValues(state) 
+ 
+    </span><span class="s2">def </span><span class="s1">getQValue(self</span><span class="s2">, </span><span class="s1">state</span><span class="s2">, </span><span class="s1">action): 
+        </span><span class="s2">return </span><span class="s1">self.computeQValueFromValues(state</span><span class="s2">, </span><span class="s1">action) 
+</span></pre>
+</body>
+</html>

@@ -1,0 +1,433 @@
+<html>
+<head>
+<title>multiAgents.py</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.ln { color: #606366; font-weight: normal; font-style: normal; }
+.s0 { color: rgb(128,128,128); }
+.s1 { color: rgb(169,183,198); }
+.s2 { color: rgb(204,120,50); }
+.s3 { color: rgb(98,151,85); font-style: italic; }
+.s4 { color: rgb(165,194,97); }
+.s5 { color: rgb(104,151,187); }
+</style>
+</head>
+<BODY BGCOLOR="#2b2b2b">
+<TABLE CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<TR><TD><CENTER>
+<FONT FACE="Arial, Helvetica" COLOR="#000000">
+multiAgents.py</FONT>
+</center></TD></TR></TABLE>
+<pre>
+<span class="s0"># multiAgents.py</span><span class="s1"> 
+</span><span class="s0"># --------------</span><span class="s1"> 
+</span><span class="s0"># Licensing Information:  You are free to use or extend these projects for</span><span class="s1"> 
+</span><span class="s0"># educational purposes provided that (1) you do not distribute or publish</span><span class="s1"> 
+</span><span class="s0"># solutions, (2) you retain this notice, and (3) you provide clear</span><span class="s1"> 
+</span><span class="s0"># attribution to UC Berkeley, including a link to http://ai.berkeley.edu.</span><span class="s1"> 
+</span><span class="s0"># </span><span class="s1"> 
+</span><span class="s0"># Attribution Information: The Pacman AI projects were developed at UC Berkeley.</span><span class="s1"> 
+</span><span class="s0"># The core projects and autograders were primarily created by John DeNero</span><span class="s1"> 
+</span><span class="s0"># (denero@cs.berkeley.edu) and Dan Klein (klein@cs.berkeley.edu).</span><span class="s1"> 
+</span><span class="s0"># Student side autograding was added by Brad Miller, Nick Hay, and</span><span class="s1"> 
+</span><span class="s0"># Pieter Abbeel (pabbeel@cs.berkeley.edu).</span><span class="s1"> 
+ 
+ 
+</span><span class="s2">from </span><span class="s1">util </span><span class="s2">import </span><span class="s1">manhattanDistance 
+</span><span class="s2">from </span><span class="s1">game </span><span class="s2">import </span><span class="s1">Directions 
+</span><span class="s2">import </span><span class="s1">random</span><span class="s2">, </span><span class="s1">util 
+ 
+</span><span class="s2">from </span><span class="s1">game </span><span class="s2">import </span><span class="s1">Agent 
+ 
+ 
+</span><span class="s2">class </span><span class="s1">ReflexAgent(Agent): 
+    </span><span class="s3">&quot;&quot;&quot; 
+      A reflex agent chooses an action at each choice point by examining 
+      its alternatives via a state evaluation function. 
+ 
+      The code below is provided as a guide.  You are welcome to change 
+      it in any way you see fit, so long as you don't touch our method 
+      headers. 
+    &quot;&quot;&quot;</span><span class="s1"> 
+ 
+    </span><span class="s2">def </span><span class="s1">getAction(self</span><span class="s2">, </span><span class="s1">gameState): 
+        </span><span class="s3">&quot;&quot;&quot; 
+        You do not need to change this method, but you're welcome to. 
+ 
+        getAction chooses among the best options according to the evaluation function. 
+ 
+        Just like in the previous project, getAction takes a GameState and returns 
+        some Directions.X for some X in the set {North, South, West, East, Stop} 
+        &quot;&quot;&quot;</span><span class="s1"> 
+        </span><span class="s0"># Collect legal moves and successor states</span><span class="s1"> 
+        legalMoves = gameState.getLegalActions() 
+ 
+        </span><span class="s0"># Choose one of the best actions</span><span class="s1"> 
+        scores = [self.evaluationFunction(gameState</span><span class="s2">, </span><span class="s1">action) </span><span class="s2">for </span><span class="s1">action </span><span class="s2">in </span><span class="s1">legalMoves] 
+        bestScore = max(scores) 
+        bestIndices = [index </span><span class="s2">for </span><span class="s1">index </span><span class="s2">in </span><span class="s1">range(len(scores)) </span><span class="s2">if </span><span class="s1">scores[index] == bestScore] 
+        chosenIndex = random.choice(bestIndices)  </span><span class="s0"># Pick randomly among the best</span><span class="s1"> 
+ 
+        </span><span class="s4">&quot;Add more of your code here if you want to&quot;</span><span class="s1"> 
+ 
+        </span><span class="s2">return </span><span class="s1">legalMoves[chosenIndex] 
+ 
+    </span><span class="s2">def </span><span class="s1">evaluationFunction(self</span><span class="s2">, </span><span class="s1">currentGameState</span><span class="s2">, </span><span class="s1">action): 
+        </span><span class="s3">&quot;&quot;&quot; 
+        Design a better evaluation function here. 
+ 
+        The evaluation function takes in the current and proposed successor 
+        GameStates (pacman.py) and returns a number, where higher numbers are better. 
+ 
+        The code below extracts some useful information from the state, like the 
+        remaining food (newFood) and Pacman position after moving (newPos). 
+        newScaredTimes holds the number of moves that each ghost will remain 
+        scared because of Pacman having eaten a power pellet. 
+ 
+        Print out these variables to see what you're getting, then combine them 
+        to create a masterful evaluation function. 
+        &quot;&quot;&quot;</span><span class="s1"> 
+        </span><span class="s0"># Useful information you can extract from a GameState (pacman.py)</span><span class="s1"> 
+ 
+        successorGameState = currentGameState.generatePacmanSuccessor(action) 
+        newPos = successorGameState.getPacmanPosition() 
+        newFood = successorGameState.getFood() 
+        newGhostStates = successorGameState.getGhostStates() 
+        newScaredTimes = [ghostState.scaredTimer </span><span class="s2">for </span><span class="s1">ghostState </span><span class="s2">in </span><span class="s1">newGhostStates] 
+ 
+        </span><span class="s4">&quot;*** YOUR CODE HERE ***&quot;</span><span class="s1"> 
+        </span><span class="s0"># print successorGameState</span><span class="s1"> 
+        </span><span class="s0"># print newPos</span><span class="s1"> 
+        </span><span class="s0"># print newPos</span><span class="s1"> 
+        </span><span class="s0"># print newGhostStates</span><span class="s1"> 
+        </span><span class="s0"># print newScaredTimes</span><span class="s1"> 
+        oldFood = currentGameState.getFood() 
+        </span><span class="s0"># currentPos = list(successorGameState.getPacmanPosition())</span><span class="s1"> 
+        </span><span class="s0"># maxDistance = float('-inf')</span><span class="s1"> 
+ 
+        </span><span class="s0"># Evaluation score</span><span class="s1"> 
+        score = successorGameState.getScore() 
+ 
+        </span><span class="s0"># Remaining food</span><span class="s1"> 
+        remainingFood = newFood.asList() 
+ 
+        </span><span class="s0"># Distance to ghost</span><span class="s1"> 
+        </span><span class="s0"># ghostPositions = [Ghost.getPosition() for Ghost in newGhostStates]</span><span class="s1"> 
+        ghostDistance = manhattanDistance(newPos</span><span class="s2">, </span><span class="s1">newGhostStates[</span><span class="s5">0</span><span class="s1">].getPosition()) 
+ 
+        </span><span class="s0"># move when stopped</span><span class="s1"> 
+        </span><span class="s2">if </span><span class="s1">action == </span><span class="s4">'Stop'</span><span class="s1">: 
+            </span><span class="s2">return </span><span class="s1">float(</span><span class="s4">'-inf'</span><span class="s1">) 
+ 
+        </span><span class="s0"># run toward ghost</span><span class="s1"> 
+        </span><span class="s0"># if len(newScaredTimes)&gt;0:</span><span class="s1"> 
+        </span><span class="s0">#     score += 10/distanceToGhost</span><span class="s1"> 
+ 
+        </span><span class="s0"># #Run away from ghost</span><span class="s1"> 
+        </span><span class="s2">if </span><span class="s1">ghostDistance &lt;= </span><span class="s5">1</span><span class="s1">: 
+            </span><span class="s0"># print &quot;Dist to ghost&quot;</span><span class="s1"> 
+            </span><span class="s0"># print distanceToGhost</span><span class="s1"> 
+            </span><span class="s0"># score = -9999</span><span class="s1"> 
+            score = float(</span><span class="s4">'-inf'</span><span class="s1">) 
+        </span><span class="s2">else</span><span class="s1">: 
+            </span><span class="s2">return </span><span class="s1">score 
+ 
+        </span><span class="s0"># Distance to food</span><span class="s1"> 
+        </span><span class="s0"># for food in remainingFood:</span><span class="s1"> 
+        </span><span class="s0">#     foodDistance = -1*manhattanDistance(newPos,food)</span><span class="s1"> 
+        foodDistance = -</span><span class="s5">1 </span><span class="s1">* [manhattanDistance(newPos</span><span class="s2">, </span><span class="s1">food) </span><span class="s2">for </span><span class="s1">food </span><span class="s2">in </span><span class="s1">remainingFood] 
+ 
+        </span><span class="s0"># Run towards nearest food</span><span class="s1"> 
+        </span><span class="s2">if </span><span class="s1">foodDistance &gt;= </span><span class="s5">1</span><span class="s1">: 
+            </span><span class="s0"># score = 9999</span><span class="s1"> 
+            score = float(</span><span class="s4">'-inf'</span><span class="s1">) 
+ 
+        </span><span class="s2">return </span><span class="s1">score 
+ 
+ 
+</span><span class="s2">def </span><span class="s1">scoreEvaluationFunction(currentGameState): 
+    </span><span class="s3">&quot;&quot;&quot; 
+      This default evaluation function just returns the score of the state. 
+      The score is the same one displayed in the Pacman GUI. 
+ 
+      This evaluation function is meant for use with adversarial search agents 
+      (not reflex agents). 
+    &quot;&quot;&quot;</span><span class="s1"> 
+    </span><span class="s2">return </span><span class="s1">currentGameState.getScore() 
+ 
+ 
+</span><span class="s2">class </span><span class="s1">MultiAgentSearchAgent(Agent): 
+    </span><span class="s3">&quot;&quot;&quot; 
+      This class provides some common elements to all of your 
+      multi-agent searchers.  Any methods defined here will be available 
+      to the MinimaxPacmanAgent, AlphaBetaPacmanAgent &amp; ExpectimaxPacmanAgent. 
+ 
+      You *do not* need to make any changes here, but you can if you want to 
+      add functionality to all your adversarial search agents.  Please do not 
+      remove anything, however. 
+ 
+      Note: this is an abstract class: one that should not be instantiated.  It's 
+      only partially specified, and designed to be extended.  Agent (game.py) 
+      is another abstract class. 
+    &quot;&quot;&quot;</span><span class="s1"> 
+ 
+    </span><span class="s2">def </span><span class="s1">__init__(self</span><span class="s2">, </span><span class="s1">evalFn=</span><span class="s4">'scoreEvaluationFunction'</span><span class="s2">, </span><span class="s1">depth=</span><span class="s4">'2'</span><span class="s1">): 
+        self.index = </span><span class="s5">0  </span><span class="s0"># Pacman is always agent index 0</span><span class="s1"> 
+        self.evaluationFunction = util.lookup(evalFn</span><span class="s2">, </span><span class="s1">globals()) 
+        self.depth = int(depth) 
+ 
+ 
+</span><span class="s2">class </span><span class="s1">MinimaxAgent(MultiAgentSearchAgent): 
+    </span><span class="s3">&quot;&quot;&quot; 
+      Your minimax agent (question 2) 
+    &quot;&quot;&quot;</span><span class="s1"> 
+ 
+    </span><span class="s2">def </span><span class="s1">getAction(self</span><span class="s2">, </span><span class="s1">gameState): 
+        </span><span class="s3">&quot;&quot;&quot; 
+          Returns the minimax action from the current gameState using self.depth 
+          and self.evaluationFunction. 
+ 
+          Here are some method calls that might be useful when implementing minimax. 
+ 
+          gameState.getLegalActions(agentIndex): 
+            Returns a list of legal actions for an agent 
+            agentIndex=0 means Pacman, ghosts are &gt;= 1 
+ 
+          gameState.generateSuccessor(agentIndex, action): 
+            Returns the successor game state after an agent takes an action 
+ 
+          gameState.getNumAgents(): 
+            Returns the total number of agents in the game 
+        &quot;&quot;&quot;</span><span class="s1"> 
+        </span><span class="s4">&quot;*** YOUR CODE HERE ***&quot;</span><span class="s1"> 
+ 
+        </span><span class="s2">def </span><span class="s1">minimax(gameState</span><span class="s2">, </span><span class="s1">depth</span><span class="s2">, </span><span class="s1">index): 
+            </span><span class="s0"># check agent index</span><span class="s1"> 
+            </span><span class="s2">if </span><span class="s1">index &gt;= gameState.getNumAgents(): 
+                index = </span><span class="s5">0</span><span class="s1"> 
+                depth += </span><span class="s5">1</span><span class="s1"> 
+ 
+            </span><span class="s0"># Check if state is terminal</span><span class="s1"> 
+            </span><span class="s2">if </span><span class="s1">(depth == self.depth </span><span class="s2">or </span><span class="s1">gameState.isWin() </span><span class="s2">or </span><span class="s1">gameState.isLose()): 
+                </span><span class="s2">return </span><span class="s1">self.evaluationFunction(gameState) 
+            </span><span class="s0"># Pacman value</span><span class="s1"> 
+            </span><span class="s2">elif </span><span class="s1">(index == </span><span class="s5">0</span><span class="s1">): 
+                </span><span class="s2">return </span><span class="s1">maxValue(gameState</span><span class="s2">, </span><span class="s1">depth</span><span class="s2">, </span><span class="s1">index) 
+            </span><span class="s0"># Ghost value</span><span class="s1"> 
+            </span><span class="s2">else</span><span class="s1">: 
+                </span><span class="s2">return </span><span class="s1">minValue(gameState</span><span class="s2">, </span><span class="s1">depth</span><span class="s2">, </span><span class="s1">index) 
+ 
+        </span><span class="s2">def </span><span class="s1">maxValue(gameState</span><span class="s2">, </span><span class="s1">depth</span><span class="s2">, </span><span class="s1">index): 
+            </span><span class="s0"># Initialize move and max value</span><span class="s1"> 
+            val = [</span><span class="s4">&quot;&quot;</span><span class="s2">, </span><span class="s1">float(</span><span class="s4">&quot;-inf&quot;</span><span class="s1">)] 
+ 
+            </span><span class="s0"># Generate all possible moves for pacman</span><span class="s1"> 
+            legalMoves = gameState.getLegalActions(index) 
+ 
+            </span><span class="s2">for </span><span class="s1">move </span><span class="s2">in </span><span class="s1">legalMoves: 
+                </span><span class="s0"># generate successor</span><span class="s1"> 
+                succState = gameState.generateSuccessor(index</span><span class="s2">, </span><span class="s1">move) 
+                </span><span class="s0"># value of successor</span><span class="s1"> 
+                succValue = minimax(succState</span><span class="s2">, </span><span class="s1">depth</span><span class="s2">, </span><span class="s1">index + </span><span class="s5">1</span><span class="s1">) 
+                </span><span class="s2">if </span><span class="s1">type(succValue) </span><span class="s2">is </span><span class="s1">list: 
+                    tempVal = succValue[</span><span class="s5">1</span><span class="s1">] 
+                </span><span class="s2">else</span><span class="s1">: 
+                    tempVal = succValue 
+                </span><span class="s2">if </span><span class="s1">tempVal &gt; val[</span><span class="s5">1</span><span class="s1">]: 
+                    val = [move</span><span class="s2">, </span><span class="s1">tempVal] 
+            </span><span class="s2">return </span><span class="s1">val 
+ 
+        </span><span class="s2">def </span><span class="s1">minValue(gameState</span><span class="s2">, </span><span class="s1">depth</span><span class="s2">, </span><span class="s1">index): 
+            </span><span class="s0"># Initialize move and min value</span><span class="s1"> 
+            val = [</span><span class="s4">&quot;&quot;</span><span class="s2">, </span><span class="s1">float(</span><span class="s4">&quot;inf&quot;</span><span class="s1">)] 
+ 
+            </span><span class="s0"># Generate all possible moves for ghosts</span><span class="s1"> 
+            legalActions = gameState.getLegalActions(index) 
+ 
+            </span><span class="s2">for </span><span class="s1">move </span><span class="s2">in </span><span class="s1">legalActions: 
+                </span><span class="s0"># generate successor</span><span class="s1"> 
+                succState = gameState.generateSuccessor(index</span><span class="s2">, </span><span class="s1">move) 
+                </span><span class="s0"># value of successor</span><span class="s1"> 
+                succValue = minimax(succState</span><span class="s2">, </span><span class="s1">depth</span><span class="s2">, </span><span class="s1">index + </span><span class="s5">1</span><span class="s1">) 
+                </span><span class="s2">if </span><span class="s1">type(succValue) </span><span class="s2">is </span><span class="s1">list: 
+                    tempVal = succValue[</span><span class="s5">1</span><span class="s1">] 
+                </span><span class="s2">else</span><span class="s1">: 
+                    tempVal = succValue 
+                </span><span class="s2">if </span><span class="s1">tempVal &lt; val[</span><span class="s5">1</span><span class="s1">]: 
+                    val = [move</span><span class="s2">, </span><span class="s1">tempVal] 
+            </span><span class="s2">return </span><span class="s1">val 
+ 
+        retVal = minimax(gameState</span><span class="s2">, </span><span class="s5">0</span><span class="s2">, </span><span class="s5">0</span><span class="s1">) 
+        </span><span class="s2">return </span><span class="s1">retVal[</span><span class="s5">0</span><span class="s1">] 
+ 
+ 
+</span><span class="s2">class </span><span class="s1">AlphaBetaAgent(MultiAgentSearchAgent): 
+    </span><span class="s3">&quot;&quot;&quot; 
+      Your minimax agent with alpha-beta pruning (question 3) 
+    &quot;&quot;&quot;</span><span class="s1"> 
+ 
+    </span><span class="s2">def </span><span class="s1">getAction(self</span><span class="s2">, </span><span class="s1">gameState): 
+        </span><span class="s3">&quot;&quot;&quot; 
+          Returns the minimax action using self.depth and self.evaluationFunction 
+        &quot;&quot;&quot;</span><span class="s1"> 
+        </span><span class="s4">&quot;*** YOUR CODE HERE ***&quot;</span><span class="s1"> 
+ 
+        </span><span class="s2">def </span><span class="s1">alphaBeta(gameState</span><span class="s2">, </span><span class="s1">depth</span><span class="s2">, </span><span class="s1">index</span><span class="s2">, </span><span class="s1">alpha</span><span class="s2">, </span><span class="s1">beta): 
+            </span><span class="s0"># check agent index</span><span class="s1"> 
+            </span><span class="s2">if </span><span class="s1">index &gt;= gameState.getNumAgents(): 
+                index = </span><span class="s5">0</span><span class="s1"> 
+                depth += </span><span class="s5">1</span><span class="s1"> 
+ 
+            </span><span class="s0"># Check if state is terminal</span><span class="s1"> 
+            </span><span class="s2">if </span><span class="s1">(depth == self.depth </span><span class="s2">or </span><span class="s1">gameState.isWin() </span><span class="s2">or </span><span class="s1">gameState.isLose()): 
+                </span><span class="s2">return </span><span class="s1">self.evaluationFunction(gameState) 
+            </span><span class="s0"># Pacman value</span><span class="s1"> 
+            </span><span class="s2">elif </span><span class="s1">(index == </span><span class="s5">0</span><span class="s1">): 
+                </span><span class="s2">return </span><span class="s1">maxValue(gameState</span><span class="s2">, </span><span class="s1">depth</span><span class="s2">, </span><span class="s1">index</span><span class="s2">, </span><span class="s1">alpha</span><span class="s2">, </span><span class="s1">beta) 
+            </span><span class="s0"># Ghost value</span><span class="s1"> 
+            </span><span class="s2">else</span><span class="s1">: 
+                </span><span class="s2">return </span><span class="s1">minValue(gameState</span><span class="s2">, </span><span class="s1">depth</span><span class="s2">, </span><span class="s1">index</span><span class="s2">, </span><span class="s1">alpha</span><span class="s2">, </span><span class="s1">beta) 
+ 
+        </span><span class="s2">def </span><span class="s1">maxValue(gameState</span><span class="s2">, </span><span class="s1">depth</span><span class="s2">, </span><span class="s1">index</span><span class="s2">, </span><span class="s1">alpha</span><span class="s2">, </span><span class="s1">beta): 
+            </span><span class="s0"># Initialize move and max value</span><span class="s1"> 
+            val = [</span><span class="s4">&quot;&quot;</span><span class="s2">, </span><span class="s1">float(</span><span class="s4">&quot;-inf&quot;</span><span class="s1">)] 
+ 
+            </span><span class="s0"># Generate all possible moves for pacman</span><span class="s1"> 
+            legalMoves = gameState.getLegalActions(index) 
+ 
+            </span><span class="s2">for </span><span class="s1">move </span><span class="s2">in </span><span class="s1">legalMoves: 
+                </span><span class="s0"># generate successor</span><span class="s1"> 
+                succState = gameState.generateSuccessor(index</span><span class="s2">, </span><span class="s1">move) 
+                </span><span class="s0"># value of successor</span><span class="s1"> 
+                succValue = alphaBeta(succState</span><span class="s2">, </span><span class="s1">depth</span><span class="s2">, </span><span class="s1">index + </span><span class="s5">1</span><span class="s2">, </span><span class="s1">alpha</span><span class="s2">, </span><span class="s1">beta) 
+                </span><span class="s2">if </span><span class="s1">type(succValue) </span><span class="s2">is </span><span class="s1">list: 
+                    tempVal = succValue[</span><span class="s5">1</span><span class="s1">] 
+                </span><span class="s2">else</span><span class="s1">: 
+                    tempVal = succValue 
+                </span><span class="s2">if </span><span class="s1">tempVal &gt; val[</span><span class="s5">1</span><span class="s1">]: 
+                    val = [move</span><span class="s2">, </span><span class="s1">tempVal] 
+                </span><span class="s2">if </span><span class="s1">tempVal &gt; beta: 
+                    </span><span class="s2">return </span><span class="s1">[move</span><span class="s2">, </span><span class="s1">tempVal] 
+                alpha = max(alpha</span><span class="s2">, </span><span class="s1">tempVal) 
+            </span><span class="s2">return </span><span class="s1">val 
+ 
+        </span><span class="s2">def </span><span class="s1">minValue(gameState</span><span class="s2">, </span><span class="s1">depth</span><span class="s2">, </span><span class="s1">index</span><span class="s2">, </span><span class="s1">alpha</span><span class="s2">, </span><span class="s1">beta): 
+            </span><span class="s0"># Initialize move and min value</span><span class="s1"> 
+            val = [</span><span class="s4">&quot;&quot;</span><span class="s2">, </span><span class="s1">float(</span><span class="s4">&quot;inf&quot;</span><span class="s1">)] 
+ 
+            </span><span class="s0"># Generate all possible moves for ghosts</span><span class="s1"> 
+            legalActions = gameState.getLegalActions(index) 
+ 
+            </span><span class="s2">for </span><span class="s1">move </span><span class="s2">in </span><span class="s1">legalActions: 
+                </span><span class="s0"># generate successor</span><span class="s1"> 
+                succState = gameState.generateSuccessor(index</span><span class="s2">, </span><span class="s1">move) 
+                </span><span class="s0"># value of successor</span><span class="s1"> 
+                succValue = alphaBeta(succState</span><span class="s2">, </span><span class="s1">depth</span><span class="s2">, </span><span class="s1">index + </span><span class="s5">1</span><span class="s2">, </span><span class="s1">alpha</span><span class="s2">, </span><span class="s1">beta) 
+                </span><span class="s2">if </span><span class="s1">type(succValue) </span><span class="s2">is </span><span class="s1">list: 
+                    tempVal = succValue[</span><span class="s5">1</span><span class="s1">] 
+                </span><span class="s2">else</span><span class="s1">: 
+                    tempVal = succValue 
+ 
+                </span><span class="s2">if </span><span class="s1">tempVal &lt; val[</span><span class="s5">1</span><span class="s1">]: 
+                    val = [move</span><span class="s2">, </span><span class="s1">tempVal] 
+                </span><span class="s2">if </span><span class="s1">tempVal &lt; alpha: 
+                    </span><span class="s2">return </span><span class="s1">[move</span><span class="s2">, </span><span class="s1">tempVal] 
+                beta = min(beta</span><span class="s2">, </span><span class="s1">tempVal) 
+ 
+            </span><span class="s2">return </span><span class="s1">val 
+ 
+        retVal = alphaBeta(gameState</span><span class="s2">, </span><span class="s5">0</span><span class="s2">, </span><span class="s5">0</span><span class="s2">, </span><span class="s1">float(</span><span class="s4">&quot;-inf&quot;</span><span class="s1">)</span><span class="s2">, </span><span class="s1">float(</span><span class="s4">&quot;inf&quot;</span><span class="s1">)) 
+        </span><span class="s2">return </span><span class="s1">retVal[</span><span class="s5">0</span><span class="s1">] 
+ 
+ 
+</span><span class="s2">class </span><span class="s1">ExpectimaxAgent(MultiAgentSearchAgent): 
+    </span><span class="s3">&quot;&quot;&quot; 
+      Your expectimax agent (question 4) 
+    &quot;&quot;&quot;</span><span class="s1"> 
+ 
+    </span><span class="s2">def </span><span class="s1">getAction(self</span><span class="s2">, </span><span class="s1">gameState): 
+        </span><span class="s3">&quot;&quot;&quot; 
+          Returns the expectimax action using self.depth and self.evaluationFunction 
+ 
+          All ghosts should be modeled as choosing uniformly at random from their 
+          legal moves. 
+        &quot;&quot;&quot;</span><span class="s1"> 
+        </span><span class="s4">&quot;*** YOUR CODE HERE ***&quot;</span><span class="s1"> 
+ 
+        </span><span class="s2">def </span><span class="s1">expectiMax(gameState</span><span class="s2">, </span><span class="s1">depth</span><span class="s2">, </span><span class="s1">index): 
+            </span><span class="s2">if </span><span class="s1">index &gt;= gameState.getNumAgents(): 
+                index = </span><span class="s5">0</span><span class="s1"> 
+                depth += </span><span class="s5">1</span><span class="s1"> 
+            </span><span class="s0"># Check if state is terminal</span><span class="s1"> 
+            </span><span class="s2">if </span><span class="s1">(depth == self.depth </span><span class="s2">or </span><span class="s1">gameState.isWin() </span><span class="s2">or </span><span class="s1">gameState.isLose()): 
+                </span><span class="s2">return </span><span class="s1">self.evaluationFunction(gameState) 
+            </span><span class="s2">elif </span><span class="s1">(index == </span><span class="s5">0</span><span class="s1">): 
+                </span><span class="s2">return </span><span class="s1">maxValue(gameState</span><span class="s2">, </span><span class="s1">depth</span><span class="s2">, </span><span class="s1">index) 
+            </span><span class="s2">else</span><span class="s1">: 
+                </span><span class="s2">return </span><span class="s1">expectedValue(gameState</span><span class="s2">, </span><span class="s1">depth</span><span class="s2">, </span><span class="s1">index) 
+ 
+        </span><span class="s2">def </span><span class="s1">maxValue(gameState</span><span class="s2">, </span><span class="s1">depth</span><span class="s2">, </span><span class="s1">index): 
+            </span><span class="s0"># Initialize move and max value</span><span class="s1"> 
+            val = [</span><span class="s4">&quot;&quot;</span><span class="s2">, </span><span class="s1">float(</span><span class="s4">&quot;-inf&quot;</span><span class="s1">)] 
+ 
+            </span><span class="s0"># Generate all possible moves for pacman</span><span class="s1"> 
+            legalMoves = gameState.getLegalActions(index) 
+ 
+            </span><span class="s2">for </span><span class="s1">move </span><span class="s2">in </span><span class="s1">legalMoves: 
+                </span><span class="s0"># generate successor</span><span class="s1"> 
+                succState = gameState.generateSuccessor(index</span><span class="s2">, </span><span class="s1">move) 
+                </span><span class="s0"># value of successor</span><span class="s1"> 
+                succValue = expectiMax(succState</span><span class="s2">, </span><span class="s1">depth</span><span class="s2">, </span><span class="s1">index + </span><span class="s5">1</span><span class="s1">) 
+                </span><span class="s2">if </span><span class="s1">type(succValue) </span><span class="s2">is </span><span class="s1">list: 
+                    tempVal = succValue[</span><span class="s5">1</span><span class="s1">] 
+                </span><span class="s2">else</span><span class="s1">: 
+                    tempVal = succValue 
+                </span><span class="s2">if </span><span class="s1">tempVal &gt; val[</span><span class="s5">1</span><span class="s1">]: 
+                    val = [move</span><span class="s2">, </span><span class="s1">tempVal] 
+            </span><span class="s2">return </span><span class="s1">val 
+ 
+        </span><span class="s2">def </span><span class="s1">expectedValue(gameState</span><span class="s2">, </span><span class="s1">depth</span><span class="s2">, </span><span class="s1">index): 
+            </span><span class="s0"># Initialize move and expected value</span><span class="s1"> 
+            val = [</span><span class="s4">&quot;&quot;</span><span class="s2">, </span><span class="s5">0</span><span class="s1">] 
+ 
+            </span><span class="s0"># Generate all possible moves for ghosts</span><span class="s1"> 
+            legalMoves = gameState.getLegalActions(index) 
+ 
+            </span><span class="s2">for </span><span class="s1">move </span><span class="s2">in </span><span class="s1">legalMoves: 
+                </span><span class="s0"># generate successor</span><span class="s1"> 
+                succState = gameState.generateSuccessor(index</span><span class="s2">, </span><span class="s1">move) 
+                </span><span class="s0"># value of successor</span><span class="s1"> 
+                succValue = expectiMax(succState</span><span class="s2">, </span><span class="s1">depth</span><span class="s2">, </span><span class="s1">index + </span><span class="s5">1</span><span class="s1">) 
+                </span><span class="s2">if </span><span class="s1">type(succValue) </span><span class="s2">is </span><span class="s1">list: 
+                    tempVal = succValue[</span><span class="s5">1</span><span class="s1">] 
+                </span><span class="s2">else</span><span class="s1">: 
+                    tempVal = succValue 
+                 
+                </span><span class="s0">#Probability of successor</span><span class="s1"> 
+                expected = </span><span class="s5">1.0 </span><span class="s1">/ len(legalMoves) 
+                val[</span><span class="s5">1</span><span class="s1">] +=  expected * tempVal 
+            </span><span class="s2">return </span><span class="s1">val 
+ 
+        outputList = expectiMax(gameState</span><span class="s2">, </span><span class="s5">0</span><span class="s2">, </span><span class="s5">0</span><span class="s1">) 
+        </span><span class="s2">return </span><span class="s1">outputList[</span><span class="s5">0</span><span class="s1">] 
+ 
+        </span><span class="s0">#util.raiseNotDefined()</span><span class="s1"> 
+ 
+ 
+</span><span class="s2">def </span><span class="s1">betterEvaluationFunction(currentGameState): 
+    </span><span class="s3">&quot;&quot;&quot; 
+      Your extreme ghost-hunting, pellet-nabbing, food-gobbling, unstoppable 
+      evaluation function (question 5). 
+ 
+      DESCRIPTION: &lt;write something here so we know what you did&gt; 
+    &quot;&quot;&quot;</span><span class="s1"> 
+    </span><span class="s4">&quot;*** YOUR CODE HERE ***&quot;</span><span class="s1"> 
+ 
+ 
+</span><span class="s0">#    util.raiseNotDefined()</span><span class="s1"> 
+ 
+</span><span class="s0"># Abbreviation</span><span class="s1"> 
+better = betterEvaluationFunction 
+</span></pre>
+</body>
+</html>
