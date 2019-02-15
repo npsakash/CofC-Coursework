@@ -1,6 +1,5 @@
 
 
-###Chase Code###
 jointData<-read.csv("C:/Users/Neal/Documents/CofC/2017/Fall/MATH 440/HW1/mydata.csv",header=T)
 plot(jointData$x,jointData$y,pch=19,col="green",xlab = "x",ylab = "y")
 df<-data.frame(list(x=jointData$x,y=jointData$y))
